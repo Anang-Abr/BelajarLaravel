@@ -1,0 +1,1 @@
+<h1>Ajax Ready</h1>
