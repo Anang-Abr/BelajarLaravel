@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\BookInfoController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +18,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [BookInfoController::class, 'index']);
-Route::get('/Home', [BookInfoController::class, 'index']);
-Route::get('/Home/{BookInfo}', [BookInfoController::class, 'info']);
-Route::get('/About', [BookInfoController::class, 'about']);
+Route::get('/home', [BookInfoController::class, 'index']);
+Route::get('/home/{BookInfo}', [BookInfoController::class, 'info']);
+Route::get('/about', [BookInfoController::class, 'about']);
 
 
+Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::get('/logout', [LoginController::class, 'logout']);
+
+
+Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/register', [RegisterController::class, 'authenticate']);
+
+Route::resource('/cart', CartController::class)->middleware('auth');

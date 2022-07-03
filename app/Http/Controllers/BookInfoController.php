@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class BookInfoController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('home', [
             'title' => 'Home',
             'books' => BookInfo::All()
@@ -27,5 +28,10 @@ class BookInfoController extends Controller
             'title' => 'Info',
             'book' => $BookInfo
         ]);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'id';
     }
 }

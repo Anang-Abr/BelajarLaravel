@@ -20,4 +20,9 @@ class BookInfo extends Model
         'created_at',
         'updated_at'
     ];
+    
+    public function cart()
+    {
+        return $this->hasMany(Cart::class, 'book_id');
+    }
 }
