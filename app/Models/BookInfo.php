@@ -23,6 +23,6 @@ class BookInfo extends Model
     
     public function cart()
     {
-        return $this->hasMany(Cart::class, 'book_id');
+        return $this->hasMany(Cart::class);
     }
 }

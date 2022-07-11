@@ -16,8 +16,7 @@ class CartController extends Controller
      */
     public function index()
     {   
-        // return(Cart::with(['bookinfo','user'])->where('user_id', '=', Auth::user()->id)->get());
-        return view('cart.show', [
+        return view('cart.index', [
             'items' => Cart::with(['bookinfo','user'])->where('user_id', '=', Auth::user()->id)->get()
         ]);
     }
@@ -40,15 +39,22 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {   
-        $validData = $request->validate([
+        $validatedData = $request->validate([
             'book_id' => 'required',
+            'value' => 'required',
         ]);
         $book = BookInfo::find($request->book_id);
-        $validData['user_id'] = Auth::user()->id;
-        $validData['value'] = 1;
-        $validData['total_price'] = $validData['value'] * $book->price;
-        
-        Cart::create($validData);
+        $validatedData['user_id'] = Auth::user()->id;
+        $validatedData['value'] = $validatedData['value'];
+        $userCart = Cart::where('user_id', '=', Auth::user()->id)->where('book_id', '=', $validatedData['book_id'])->first();
+        if($userCart){
+            $validatedData['value'] += $userCart->value;
+            $validatedData['total_price'] = $validatedData['value'] * $book->price;
+            Cart::where('id', '=', $userCart->id)->update($validatedData);
+            return back();
+        }
+        $validatedData['total_price'] = $validatedData['value'] * $book->price;
+        Cart::create($validatedData);
         return back();
     }
 
@@ -60,7 +66,9 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        // return view('cart.show');
+        return view('cart.show', [
+            'item' => Cart::find($cart->id)
+        ]);
     }
 
     /**
@@ -82,8 +90,13 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Cart $cart)
-    {
-        //
+    {   
+        $validatedData = $request->validate([
+            'value' => 'required',
+        ]);
+        $validatedData['total_price'] = $validatedData['value'] * $request['price'];
+        Cart::where('id', '=', $cart->id)->update($validatedData);
+        return back();
     }
 
     /**
@@ -93,7 +106,9 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Cart $cart)
-    {
-        //
+    {   
+        
+        Cart::destroy($cart->id);
+        return back();
     }
 }

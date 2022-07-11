@@ -23,12 +23,12 @@ Route::get('/home/{BookInfo}', [BookInfoController::class, 'info']);
 Route::get('/about', [BookInfoController::class, 'about']);
 
 
-Route::get('/login', [LoginController::class, 'index']);
-Route::post('/login', [LoginController::class, 'authenticate']);
-Route::get('/logout', [LoginController::class, 'logout']);
+Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
+Route::post('/login', [LoginController::class, 'authenticate'])->middleware('guest');
+Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth');
 
 
-Route::get('/register', [RegisterController::class, 'index']);
-Route::post('/register', [RegisterController::class, 'authenticate']);
+Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
+Route::post('/register', [RegisterController::class, 'authenticate'])->middleware('guest');
 
 Route::resource('/cart', CartController::class)->middleware('auth');

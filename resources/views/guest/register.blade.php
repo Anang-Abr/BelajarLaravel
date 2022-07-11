@@ -1,6 +1,8 @@
 @extends('template.main')
 
 @section('content')
+<div class="row my-4 justify-content-center">
+  <div class="col-4">
 <main class="form-signin w-100 m-auto">
     <h1 class="h3 mb-3 fw-normal text-center">Register</h1>
   <form action="{{ url('/register') }}" method="post">
@@ -29,8 +31,10 @@
     </div>
     
     <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Register</button>
-    <small>Already have an account?</small> <a href="{{ url('register') }}">Login</a></small>
+    <small>Already have an account?</small> <a href="{{ url('login') }}">Login</a></small>
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
   </form>
 </main>
+  </div>
+</div>
 @endsection
